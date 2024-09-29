@@ -283,13 +283,18 @@ digraph {
 digraph {
   rankdir=LR;
   bgcolor=white;
-  node [shape=egg height="0" margin="0.1,0.05" fontname=terminus fontsize=13 fontcolor=black color="#00000099" style="solid"]
+  node [shape=egg height="0.5" margin="0.1,0.05" fontname=terminus fontsize=14 fontcolor=black color="#00000099" style="solid"]
   edge [color="black" fillcolor="white" style="solid"]
 
 plant -> sensor -> mqtt -> homeassistant -> influxdb -> grafana
 homeassistant -> valve -> plant
 }
 #+end_src
+
+
+Sensor is sending data via wifi to MQTT which makes it autodiscoverable by homeassistant, which will automatically store the historical data into influxdb
+
+(link integrations, link to setup guide for influx+mqtt)
 
 [[file:./img/data_flow.png]]
 
