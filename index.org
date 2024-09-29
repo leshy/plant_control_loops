@@ -1,85 +1,31 @@
 
 
-
-
 * Two approaches
 
-** Blind with outlet
+** Blind with drainage
 
-** Sensored with a control loop
-Most people want this since it's difficult to get rid of water
+If you have a way to get rid of the exess water, which is difficult, the watering part is easy, you just flood periodically.
+
+[[./img/watering3.jpeg]]
+
+[[./img/watering4.jpeg]]
+
+Moisture sensor(s) here are optional.
+
+The way I get rid of the exess water is I detect it (link the sensor) and I pump it out of the house using a stronger pump (link the pump)
+
+[[./img/watering2.jpeg]]
+
+
+** Sensored control loop
+I assume most people want this since it's difficult to link all the pots to pumps.
 
 Each plant has it's own individual soil sensor and a simple controller that maintains a control loop of reading soil capcitive moisture data and triggering watering cycles.
 
-* TODO Sensored control loop
 
-[[./img/drawing1.png]]
+* TODO Drainage
 
-Sensor reads moisture, valve tops up moisture.
-
-You basically need 12v or 24v power input for the valve
-Step down to 5v for the controller
-
-Some sort of a way for a controller to use it's low power/voltage output to trigger 12v/24v valve
-
-I'm providing 3d printed housing but it's not amazing, would be good to have a splashproof housing around it.
-Some parts are press fit, so you might need to adjust depending on your printer.
-
-[[./img/sensormount.png]]
-
-
-[[./img/sensormount_photo1.jpeg]]
-
-[[./img/sensormount_photo2.jpeg]]
-
-[[./img/sensormount_photo3.jpeg]]
-
-** TODO Single localized channel
-*** Upsides
-You can have standalone device that's autonomous. No external dependencies but hass for control, data collection etc.
-Your computer can explode but this will work correctly as long as it has power and water
-
-HASS used only as an UI to set tipping points for watering, amount of watering etc, manually trigger watering etc.
-
-*** Downsides
-A bit chunky I guess? Individual nodes a bit more complex.
-
-*** Implementation
-TIP120 for single channel
-
-[[./img/single_node.jpg]]
-
-
-** TODO Multi channel manifold
-
-*** Upsides
-Self contained easy to maintain point that you can try and hide somewhere.
-
-
-*** Implementation
-ULN2803 for 8 channel control
-at least ESP32 for control due to more outputs
-
-
-* TODO Plant pot
-
-Push in fittings I use are metric, if this is difficult in US you might need to remodel the screw parts:
-
-- 12mm OD tube / M12 screw for outlets
-- 6mm OD tube / M12 screw for inlets
-
-Important note here. You want an O-ring, my fittings come with O-rings. otherwise you need to deal with sillicone/teflon idk, this is much more convinient
-
-[[./img/push_in_fitting.jpeg]]
-
-
-** TODO Watering element
-
-[[./img/watering.png]]
-
-I just leave it in a pot, would be nice to design some spikes that hold this thing, no rules, can design whatever seems good here.
-
-** TODO Outlets
+** TODO Plant Pot connection
 
 Goal here was to design an outlet that doesn't require watertight seal since this is difficult and unreliable long term.
 
@@ -103,7 +49,96 @@ Needs to be printed with supports.
 
 Captures water that might leak from the sides of the screw. Provides a connection for a push-in fitting.
 
+** TODO pump
+...
 
+
+* TODO Sensored control
+
+[[./img/drawing1.png]]
+
+Sensor reads moisture, valve tops up moisture, we avoid pot dripping or overwatering
+
+** Sensor construction
+
+it's just a microcontroller, sending data using wifi, receiving power input.
+
+- use higher voltage (12v) for power delivery to avoid power losses due to cable lengths
+
+- Step down to get stable 5v for the controller/sensor
+
+I'm providing 3d printed housing but it's not amazing, would be good to have a splashproof housing around it.
+
+Some parts are press fit, so you might need to adjust depending on your printer.
+
+[[./img/sensormount.png]]
+
+
+[[./img/sensormount_photo1.jpeg]]
+
+[[./img/sensormount_photo2.jpeg]]
+
+[[./img/sensormount_photo3.jpeg]]
+
+[[./img/watering1.jpeg]]
+
+** TODO Single localized channel
+
+You might want to put a valve where the sensor is,
+
+
+*** Upsides
+You can have standalone device that's autonomous. No external dependencies but hass for control, data collection etc.
+Your computer can explode but this will work correctly as long as it has power and water
+
+HASS used only as an UI to set tipping points for watering, amount of watering etc, manually trigger watering etc.
+
+*** Downsides
+A bit chunky I guess? Individual nodes a bit more complex.
+
+*** Implementation
+
+- requires some sort of a way for a controller to use its low power/voltage output to
+   trigger 12v/24v valve - TIP120
+
+
+[[./img/single_node.jpg]]
+
+
+** TODO Multi channel manifold
+
+A centralized place with all the valves
+
+[[./img/watering5.jpeg]]
+
+*** Upsides
+- Self contained, easy to maintain point that you can try and hide somewhere.
+
+- The whole system is not pressurized all the time, seems much safer.
+
+*** Implementation
+- ULN2803 for 8 channel control instead of TIP120
+
+- at least ESP32 for control due to more outputs
+
+
+* TODO Plant pot
+
+Push in fittings I use are metric, if this is difficult in US you might need to remodel the screw parts:
+
+- 12mm OD tube / M12 screw for outlets
+- 6mm OD tube / M12 screw for inlets
+
+Important note here. You want an O-ring, my fittings come with O-rings. otherwise you need to deal with sillicone/teflon idk, this is much more convinient
+
+[[./img/push_in_fitting.jpeg]]
+
+
+** TODO Watering elements
+
+[[./img/watering.png]]
+
+I just leave it in a pot, would be nice to design some spikes that hold this thing, this is mostly for the vibes, simpler elements (gardena? (link it)) are fine here
 
 * TODO Panel
 Requirements - easy maitenance, easy to move stuff around, modular.
