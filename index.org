@@ -279,7 +279,22 @@ digraph {
 
 * Data collection and calibration
 
-sensor -> mqtt -> homeassistant -> influxdb -> grafana for viewing
+#+begin_src dot :file ./img/data_flow.png :results file graphics
+digraph {
+  rankdir=LR;
+  bgcolor=transparent;
+  node [shape=egg height="0" margin="0.1,0.05" fontname=terminus fontsize=13 fontcolor=white color="#ffffff99" style="solid"]
+  edge [color="#ffffff" fillcolor="transparent" style="solid"]
+
+plant -> sensor -> mqtt -> homeassistant -> influxdb -> grafana
+homeassistant -> valve -> plant
+}
+#+end_src
+
+#+RESULTS:
+[[file:./img/data_flow.png]]
+
+
 
 [[./img/grafana.png]]
 
