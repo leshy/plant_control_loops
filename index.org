@@ -1,0 +1,242 @@
+
+
+
+
+* Two approaches
+
+** Blind with outlet
+
+** Sensored with a control loop
+Most people want this since it's difficult to get rid of water
+
+Each plant has it's own individual soil sensor and a simple controller that maintains a control loop of reading soil capcitive moisture data and triggering watering cycles.
+
+* TODO Sensored control loop
+
+[[./img/drawing1.png]]
+
+Sensor reads moisture, valve tops up moisture.
+
+You basically need 12v or 24v power input for the valve
+Step down to 5v for the controller
+
+Some sort of a way for a controller to use it's low power/voltage output to trigger 12v/24v valve
+
+I'm providing 3d printed housing but it's not amazing, would be good to have a splashproof housing around it.
+Some parts are press fit, so you might need to adjust depending on your printer.
+
+[[./img/sensormount.png]]
+
+
+[[./img/sensormount_photo1.jpeg]]
+
+[[./img/sensormount_photo2.jpeg]]
+
+[[./img/sensormount_photo3.jpeg]]
+
+** TODO Single localized channel
+*** Upsides
+You can have standalone device that's autonomous. No external dependencies but hass for control, data collection etc.
+Your computer can explode but this will work correctly as long as it has power and water
+
+HASS used only as an UI to set tipping points for watering, amount of watering etc, manually trigger watering etc.
+
+*** Downsides
+A bit chunky I guess? Individual nodes a bit more complex.
+
+*** Implementation
+TIP120 for single channel
+
+[[./img/single_node.jpg]]
+
+
+** TODO Multi channel manifold
+
+*** Upsides
+Self contained easy to maintain point that you can try and hide somewhere.
+
+
+*** Implementation
+ULN2803 for 8 channel control
+at least ESP32 for control due to more outputs
+
+
+* TODO Plant pot
+
+Push in fittings I use are metric, if this is difficult in US you might need to remodel the screw parts:
+
+- 12mm OD tube / M12 screw for outlets
+- 6mm OD tube / M12 screw for inlets
+
+Important note here. You want an O-ring, my fittings come with O-rings. otherwise you need to deal with sillicone/teflon idk, this is much more convinient
+
+[[./img/push_in_fitting.jpeg]]
+
+
+** TODO Watering element
+
+[[./img/watering.png]]
+
+I just leave it in a pot, would be nice to design some spikes that hold this thing, no rules, can design whatever seems good here.
+
+** TODO Outlets
+
+Goal here was to design an outlet that doesn't require watertight seal since this is difficult and unreliable long term.
+
+We use a bottom convex element to capture water flowing around the screw, though we expect the bulk of water to flow through it.
+
+[[./img/potOutlet2.png]]
+
+*** Soil filter
+This is probably annoying to print for most people, We just want to prevent large chunks of soil from entering the outlet tube. A random rock, fine netting, a sponge etc is ok for this as well.
+
+*** In-pot element
+Gives you a screw on the other side. You can adjust a height of this according to your pot walls.
+
+I sometimes print this in full size and break it off to size after fitting.
+If your pot bottom is especially coarse you want to add sillicone where it connects to the pot to lower the flow, (you won't prevent it, especially long term)
+
+*** Bottom convex element
+Print this with a few walls (I use 4) to prevent random permiability.
+You might want a random Z-seam alignment for the same reason as well.
+Needs to be printed with supports.
+
+Captures water that might leak from the sides of the screw. Provides a connection for a push-in fitting.
+
+
+
+* TODO Panel
+Requirements - easy maitenance, easy to move stuff around, modular.
+
+Modules with standardized inputs and outputs (so you can just add a fertilization module, sensor module, UV module etc)
+
+#+begin_src dot :file modules.svg :results file graphics
+digraph {
+  rankdir=TB;
+  bgcolor=transparent;
+  edge [color="#ffffff70" fillcolor="transparent" style="solid"]
+  node [fontname=monospace fontcolor=white shape=box color="#ffffff88" style="solid"]
+
+  subgraph {
+    node [shape=box color="#77ff7788" fillcolor="#77ff7730" style="filled"]
+
+    Water_in, Water_out, Power -> Watering_manifold
+
+
+    Fertilizer -> Fertilizer_module
+    Watering_manifold -> Fertilizer_module -> Sterilization_module -> X_module
+    X_module -> Sterilization_module -> Fertilizer_module -> Watering_manifold
+  }
+}
+#+end_src
+
+#+RESULTS:
+[[file:modules.svg]]
+
+
+
+
+Module panel is actually IKEA skadis compatible, so you can just buy those. I cut mine on a CNC
+
+[[./img/panel.png]]
+
+form factor depends on your installation. one of the ideas was that you can overlay making maitenance and accesibility slightly worse
+
+[[./img/panels.png]]
+
+Each panel has inputs and outputs with standardized mounts for water/electricity/air/signals
+
+Printable adapters for different sized connectors are possible.
+
+[[./img/adapter.png]]
+
+
+
+
+
+* TODO watering manifold module
+...
+
+* TODO Fertilizer injector module
+This is optional and many ways to go about it, my current way is the worst
+
+#+begin_src dot :file ./img/fertilizer1.png :results file graphics
+digraph {
+  rankdir=LR;
+  bgcolor=transparent;
+  edge [color="#ffffff70" fillcolor="transparent" style="solid"]
+  node [fontname=monospace fontcolor=white shape=box color="#ffffff88" style="solid"]
+
+
+  subgraph {
+    node [shape=box color="#77ff7788" fillcolor="#77ff7730" style="filled"]
+    water_input
+    fertilizer_input
+  }
+
+  subgraph {
+    node [shape=box color="#ff777788" fillcolor="#ff777730" style="filled"]
+    water_output
+  }
+
+  subgraph {
+      node [shape=box color="#7777ff88" fillcolor="#7777ff30" style="filled"]
+      water_input -> flow_sensor -> water_output
+      fertilizer_input -> pump -> water_output
+  }
+
+  subgraph
+  {
+  node [shape=box color="#00ffff88" fillcolor="#00ffff30"  style="filled"]
+  edge [color="#00ffff70" fillcolor="transparent" style="dashed"]
+
+  controller -> flow_sensor
+  controller -> pump
+  }
+
+}
+#+end_src
+
+#+RESULTS:
+[[file:./img/fertilizer1.png]]
+
+
+Controller measures water flow, scales pumping speed according to water flow speed.
+Flow sensor can be considered unneccesary since if you have consistent input pressure, and are watering pot by pot, your flow is roughly the same.
+
+So you could just have a fixed flow speed.
+
+
+** TODO EC calibration
+you need an EC sensor
+
+
+** TODO Better approaches
+- you don't do it, fertilize manually into the pots every once in a while?
+
+- you don't measure flow, but EC, since the way you mix fertilizer is EC
+
+
+* TODO Plant sensor element
+Super simple, we take a capacitive soil moisture sensor (I have some generic non versioned one, many places selling them)
+
+https://duckduckgo.com/?t=ffab&q=capacitive+soil+sensor&iax=images&ia=images
+[[./img/capacitive-soil-moisture-sensor.png]]
+
+People say that they can be unreliable, they are dirt cheap, buy a few, if you detect a dud looking at historical data, just replace it.
+
+
+
+
+#+begin_src dot :file watering1.svg :results file graphics
+digraph {
+  rankdir=LR;
+  bgcolor=transparent;
+  node [shape=egg height="0" margin="0.1,0.05" fontname=terminus fontsize=14 fontcolor=white color="#ffffff99" style="solid"]
+  edge [color="#ffffff" fillcolor="transparent" style="solid"]
+
+  bla -> lala
+}
+#+end_src
+#+RESULTS:
+[[file:watering1.svg]]
