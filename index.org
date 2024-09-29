@@ -275,3 +275,13 @@ digraph {
 #+end_src
 #+RESULTS:
 [[file:watering1.svg]]
+
+
+* Data collection and calibration
+
+sensor -> mqtt -> homeassistant -> influxdb -> grafana for viewing
+
+[[./img/grafana.png]]
+
+- shows a single sensor and points at which watering was triggered
+- watering cycle was manually executed so you can notice that it starts at inconsistent moisture points
