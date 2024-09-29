@@ -65,7 +65,9 @@ it's just a microcontroller, sending data using wifi, receiving power input.
 
 - use higher voltage (12v) for power delivery to avoid power losses due to cable lengths
 
-- Step down to get stable 5v for the controller/sensor
+- local voltage step-down to 5v stabilizes the power which is good for sensor readings
+
+- you can drop the whole step down circuit and choose to power the sensor via USB directly if more convinient
 
 I'm providing 3d printed housing but it's not amazing, would be good to have a splashproof housing around it.
 
@@ -84,17 +86,18 @@ Some parts are press fit, so you might need to adjust depending on your printer.
 
 ** TODO Single localized channel
 
-You might want to put a valve where the sensor is,
-
+You might want to put a valve where the sensor is.
 
 *** Upsides
-You can have standalone device that's autonomous. No external dependencies but hass for control, data collection etc.
+You can have standalone device that's autonomous. External dependencies optional
 Your computer can explode but this will work correctly as long as it has power and water
 
-HASS used only as an UI to set tipping points for watering, amount of watering etc, manually trigger watering etc.
+HASS used only as an UI to set tipping points for watering, data collection etc.
+
+Instead of a valve you can connect a small pump, and pump water from a watering bottle close by
 
 *** Downsides
-A bit chunky I guess? Individual nodes a bit more complex.
+A bit chunky I guess? Individual nodes a bit more complex, most of the system is pressurized
 
 *** Implementation
 
@@ -260,24 +263,13 @@ https://duckduckgo.com/?t=ffab&q=capacitive+soil+sensor&iax=images&ia=images
 
 People say that they can be unreliable, they are dirt cheap, buy a few, if you detect a dud looking at historical data, just replace it.
 
-
-
-
-#+begin_src dot :file watering1.svg :results file graphics
-digraph {
-  rankdir=LR;
-  bgcolor=transparent;
-  node [shape=egg height="0" margin="0.1,0.05" fontname=terminus fontsize=14 fontcolor=white color="#ffffff99" style="solid"]
-  edge [color="#ffffff" fillcolor="transparent" style="solid"]
-
-  bla -> lala
-}
-#+end_src
-#+RESULTS:
-[[file:watering1.svg]]
-
-
 * Data collection and calibration
+
+- we want minimal setup, ideally once the sensor is plugged in, it should show up in hass, in graphs etc
+
+Sensor is sending data via wifi to MQTT which makes it autodiscoverable by homeassistant, which will automatically store the historical data into influxdb
+
+(link integrations, link to setup guide for influx+mqtt)
 
 #+begin_src dot :file ./img/data_flow.png :results file graphics
 digraph {
@@ -291,11 +283,6 @@ homeassistant -> valve -> plant
 }
 #+end_src
 
-
-Sensor is sending data via wifi to MQTT which makes it autodiscoverable by homeassistant, which will automatically store the historical data into influxdb
-
-(link integrations, link to setup guide for influx+mqtt)
-
 [[file:./img/data_flow.png]]
 
 
@@ -303,4 +290,4 @@ Sensor is sending data via wifi to MQTT which makes it autodiscoverable by homea
 [[./img/grafana.png]]
 
 - shows a single sensor and points at which watering was triggered
-- watering cycle was manually executed so you can notice that it starts at inconsistent moisture points
+- in this case watering cycles were manually executed (you can notice that watering starts at arbitrary moisture levels)
