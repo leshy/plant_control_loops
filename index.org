@@ -11,7 +11,8 @@ If you have a way to get rid of the exess water, which is difficult, the waterin
 
 Moisture sensor(s) here are optional.
 
-The way I get rid of the exess water is I detect it (link the sensor) and I pump it out of the house using a stronger pump (link the pump)
+The way I get rid of the exess water is I detect it and I pump it out of the house using a stronger pump.
+Details on this in plant_pot.org file
 
 [[./img/watering2.jpeg]]
 
@@ -97,6 +98,7 @@ Printable adapters for different sized connectors are possible.
 ...
 
 * TODO In-line injector module (fertilization, sterilization etc)
+
 This is optional and many ways to go about it. In theory this gives you an ability to run a hydroponic system as well.
 
 #+begin_src dot :file ./img/injector.svg :results file graphics
@@ -132,6 +134,8 @@ digraph {
 
 Controller scales pump speed according to water flow.
 If you have consistent pressure you can just calibrate the pump to work on a consistent speed instead of having sensored control.
+
+Sensor I use is [[https://wiki.dfrobot.com/Water_Flow_Sensor_-_1_8__SKU__SEN0216][this one]]
 
 ** TODO EC calibration
 We need to figure out how hard we want to run the pump depending on the detected flow speed.

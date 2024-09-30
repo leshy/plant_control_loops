@@ -45,6 +45,8 @@ My pump control box contains a power supply, a button for manual activation, and
 
 Control box takes power input, sensor input and provides pump output
 
+[[https://www.dfrobot.com/product-1493.html][Sensor I use is this one]]
+
 #+begin_src dot :file ./img/pump.svg :results file graphics
 digraph {
         rankdir=LR;
