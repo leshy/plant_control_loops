@@ -49,6 +49,8 @@ Captures water that might leak from the sides of the screw. Provides a connectio
 ** sink pump
 We detect water in the bottom container, auto-engage the pump to get rid of it.
 
+My pump control box contains a power supply, a button for manual activation, and it looks like I used a relay to control the pump. Could have used TIP120 as well instead.
+
 #+begin_src dot :file ./img/pump.svg :results file graphics
 digraph {
         rankdir=LR;
@@ -72,3 +74,6 @@ digraph {
 #+end_src
 
 [[file:./img/pump.svg]]
+
+
+[[./img/pump.jpeg]]
