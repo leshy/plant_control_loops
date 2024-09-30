@@ -57,8 +57,6 @@ homeassistant -> valve -> plant
 
 [[file:./img/data_flow.svg]]
 
-
-
 [[./img/grafana.png]]
 
 - shows a single sensor and points at which watering was triggered

@@ -30,10 +30,10 @@ We use a bottom convex element to capture water flowing around the screw, though
 [[./img/potOutlet2.png]]
 
 *** Soil filter
-This is probably annoying to print for most people, We just want to prevent large chunks of soil from entering the outlet tube. A random rock, fine netting, a sponge etc is ok for this as well.
+This is probably annoying to print for most people, It function is to prevent large chunks of soil from entering the outlet tube. A random rock, fine netting, a sponge etc is ok for this as well.
 
 *** In-pot element
-Gives you a screw on the other side. You can adjust a height of this according to your pot walls.
+Gives you a screw on the other side. You can adjust a height of this according to your pot bottom thickness
 
 I sometimes print this in full size and break it off to size after fitting.
 If your pot bottom is especially coarse you want to add sillicone where it connects to the pot to lower the flow, (you won't prevent it, especially long term)
@@ -46,7 +46,29 @@ Needs to be printed with supports.
 Captures water that might leak from the sides of the screw. Provides a connection for a push-in fitting.
 
 
+** sink pump
+We detect water in the bottom container, auto-engage the pump to get rid of it.
+
+#+begin_src dot :file ./img/pump.svg :results file graphics
+digraph {
+        rankdir=LR;
+        bgcolor=white; fontname="monospace"; fontsize=10; fontcolor=black;
+        node [shape=egg height="0.5" margin="0.1,0.05"  color="#00000099" style="solid" fontname="monospace"; fontsize=10; fontcolor=black]
+        edge [color="#2196F3" fillcolor="white" style="solid"]
+
+        subgraph cluster_water_flow {
+                label="Main Flow"; style="dotted"
+                pot_outlet -> container -> pump -> water_sink [weight=5]
+                container -> sensor [arrowhead="none", style="dashed"]
+        }
+
+        subgraph {
+                edge [color="#FF9800" fillcolor="white" style="dashed" arrowhead="none" weight=0]
+                controller -> sensor, pump
+        }
 
 
-** TODO pump
-...
+}
+#+end_src
+
+[[file:./img/pump.svg]]
