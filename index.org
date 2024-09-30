@@ -6,7 +6,6 @@
 
 If you have a way to get rid of the exess water, which is difficult, the watering part is easy, you just flood periodically.
 
-[[./img/watering3.jpeg]]
 
 [[./img/watering4.jpeg]]
 
@@ -22,35 +21,6 @@ I assume most people want this since it's difficult to link all the pots to pump
 
 Each plant has it's own individual soil sensor and a simple controller that maintains a control loop of reading soil capcitive moisture data and triggering watering cycles.
 
-
-* TODO Drainage
-
-** TODO Plant Pot connection
-
-Goal here was to design an outlet that doesn't require watertight seal since this is difficult and unreliable long term.
-
-We use a bottom convex element to capture water flowing around the screw, though we expect the bulk of water to flow through it.
-
-[[./img/potOutlet2.png]]
-
-*** Soil filter
-This is probably annoying to print for most people, We just want to prevent large chunks of soil from entering the outlet tube. A random rock, fine netting, a sponge etc is ok for this as well.
-
-*** In-pot element
-Gives you a screw on the other side. You can adjust a height of this according to your pot walls.
-
-I sometimes print this in full size and break it off to size after fitting.
-If your pot bottom is especially coarse you want to add sillicone where it connects to the pot to lower the flow, (you won't prevent it, especially long term)
-
-*** Bottom convex element
-Print this with a few walls (I use 4) to prevent random permiability.
-You might want a random Z-seam alignment for the same reason as well.
-Needs to be printed with supports.
-
-Captures water that might leak from the sides of the screw. Provides a connection for a push-in fitting.
-
-** TODO pump
-...
 
 
 * TODO Sensored control
@@ -98,24 +68,6 @@ A centralized place with all the valves
 - at least ESP32 for control due to more outputs
 
 
-* TODO Watering Elements
-
-Push in fittings I use are metric, if this is difficult in US you might need to remodel the screw parts:
-
-- 12mm OD tube / M12 screw for outlets
-- 6mm OD tube / M12 screw for inlets
-
-Important note here. You want an O-ring, my fittings come with O-rings. otherwise you need to deal with sillicone/teflon for water tightness, this is much more convinient, without leaks even when screwing into 3d printed parts
-
-[[./img/push_in_fitting.jpeg]]
-
-
-** TODO Watering elements
-
-[[./img/watering.png]]
-
-I just leave it in a pot, would be nice to design some spikes that hold this thing in the soil, this is mostly for the vibes, simpler elements (gardena? (link it)) are fine here.
-
 * TODO Panel
 *** Requirements
 - easy maitenance, easy to move stuff around, modular.
@@ -145,7 +97,7 @@ Printable adapters for different sized connectors are possible.
 ...
 
 * TODO In-line injector module (fertilization, sterilization etc)
-This is optional and many ways to go about it.
+This is optional and many ways to go about it. In theory this gives you an ability to run a hydroponic system as well.
 
 #+begin_src dot :file ./img/injector.svg :results file graphics
 digraph {
