@@ -1,0 +1,21 @@
+* Push in fittings
+Push in fittings I use are metric, if this is difficult in US you might need to remodel the screw parts:
+
+- 12mm OD tube / M12 screw for outlets
+- 6mm OD tube / M12 screw for inlets
+
+Important note here. You want an O-ring, my fittings come with O-rings. otherwise you need to deal with sillicone/teflon for water tightness, this is much more convinient, without leaks even when screwing into 3d printed parts
+
+
+[[./img/push_in_fitting.jpeg]]
+
+* Connectors
+[[https://duckduckgo.com/?t=ffab&q=gx+connectors&atb=v255-1&iax=images&ia=images][GX series connectors]] are cheap and very good quality.
+
+[[./img/gx_connector.jpg]]
+
+Alternatively [[https://duckduckgo.com/?q=SP+series+waterproof+connectors&t=ffab&atb=v255-1&iar=images&iax=images&ia=images][SP series is also nice]]
+
+
+[[./img/sp_connector.jpg]]
+
