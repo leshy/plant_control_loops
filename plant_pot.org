@@ -74,3 +74,8 @@ digraph {
 
 
 [[./img/pump.jpeg]]
+
+
+Note you can always run the pump outlet through another chain of plants
+
+[[./img/pump2.jpeg]]
