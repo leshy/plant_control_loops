@@ -59,31 +59,6 @@ Captures water that might leak from the sides of the screw. Provides a connectio
 
 Sensor reads moisture, valve tops up moisture, we avoid pot dripping or overwatering
 
-** Sensor construction
-
-it's just a microcontroller, sending data using wifi, receiving power input.
-
-- use higher voltage (12v) for power delivery to avoid power losses due to cable lengths
-
-- local voltage step-down to 5v stabilizes the power which is good for sensor readings
-
-- you can drop the whole step down circuit and choose to power the sensor via USB directly if more convinient
-
-I'm providing 3d printed housing but it's not amazing, would be good to have a splashproof housing around it.
-
-Some parts are press fit, so you might need to adjust depending on your printer.
-
-[[./img/sensormount.png]]
-
-
-[[./img/sensormount_photo1.jpeg]]
-
-[[./img/sensormount_photo2.jpeg]]
-
-[[./img/sensormount_photo3.jpeg]]
-
-[[./img/watering1.jpeg]]
-
 ** TODO Single localized channel
 
 You might want to put a valve where the sensor is.
@@ -116,23 +91,21 @@ A centralized place with all the valves
 
 *** Upsides
 - Self contained, easy to maintain point that you can try and hide somewhere.
-
-- The whole system is not pressurized all the time, seems much safer.
+- It looks good on reddit
 
 *** Implementation
 - ULN2803 for 8 channel control instead of TIP120
-
 - at least ESP32 for control due to more outputs
 
 
-* TODO Plant pot
+* TODO Watering Elements
 
 Push in fittings I use are metric, if this is difficult in US you might need to remodel the screw parts:
 
 - 12mm OD tube / M12 screw for outlets
 - 6mm OD tube / M12 screw for inlets
 
-Important note here. You want an O-ring, my fittings come with O-rings. otherwise you need to deal with sillicone/teflon idk, this is much more convinient
+Important note here. You want an O-ring, my fittings come with O-rings. otherwise you need to deal with sillicone/teflon for water tightness, this is much more convinient, without leaks even when screwing into 3d printed parts
 
 [[./img/push_in_fitting.jpeg]]
 
@@ -141,40 +114,19 @@ Important note here. You want an O-ring, my fittings come with O-rings. otherwis
 
 [[./img/watering.png]]
 
-I just leave it in a pot, would be nice to design some spikes that hold this thing, this is mostly for the vibes, simpler elements (gardena? (link it)) are fine here
+I just leave it in a pot, would be nice to design some spikes that hold this thing in the soil, this is mostly for the vibes, simpler elements (gardena? (link it)) are fine here.
 
 * TODO Panel
-Requirements - easy maitenance, easy to move stuff around, modular.
-
-Modules with standardized inputs and outputs (so you can just add a fertilization module, sensor module, UV module etc)
-
-#+begin_src dot :file modules.svg :results file graphics
-digraph {
-  rankdir=TB;
-  bgcolor=transparent;
-  edge [color="#ffffff70" fillcolor="transparent" style="solid"]
-  node [fontname=monospace fontcolor=white shape=box color="#ffffff88" style="solid"]
-
-  subgraph {
-    node [shape=box color="#77ff7788" fillcolor="#77ff7730" style="filled"]
-
-    Water_in, Water_out, Power -> Watering_manifold
+*** Requirements
+- easy maitenance, easy to move stuff around, modular.
+- easy to add new modules
+- standardized inputs and outputs (so you can just add a fertilization module, sensor module, UV module etc)
+- passthrough central bus for common connections (power, water_in, water_out, air)
 
 
-    Fertilizer -> Fertilizer_module
-    Watering_manifold -> Fertilizer_module -> Sterilization_module -> X_module
-    X_module -> Sterilization_module -> Fertilizer_module -> Watering_manifold
-  }
-}
-#+end_src
+*** Design
 
-#+RESULTS:
-[[file:modules.svg]]
-
-
-
-
-Module panel is actually IKEA skadis compatible, so you can just buy those. I cut mine on a CNC
+Module panel is actually IKEA skadis compatible, so you can just buy those. I cut mine on a CNC. If using cnc consider thin aluminium, since you are dealing with water.
 
 [[./img/panel.png]]
 
@@ -189,105 +141,54 @@ Printable adapters for different sized connectors are possible.
 [[./img/adapter.png]]
 
 
-
-
-
 * TODO watering manifold module
 ...
 
-* TODO Fertilizer injector module
-This is optional and many ways to go about it, my current way is the worst
+* TODO In-line injector module (fertilization, sterilization etc)
+This is optional and many ways to go about it.
 
-#+begin_src dot :file ./img/fertilizer1.png :results file graphics
+#+begin_src dot :file ./img/injector.svg :results file graphics
 digraph {
-  rankdir=LR;
-  bgcolor=transparent;
-  edge [color="#ffffff70" fillcolor="transparent" style="solid"]
-  node [fontname=monospace fontcolor=white shape=box color="#ffffff88" style="solid"]
+        rankdir=LR;
+        bgcolor=white; fontname="monospace"; fontsize=10; fontcolor=black;
+        node [shape=egg height="0.5" margin="0.1,0.05"  color="#00000099" style="solid" fontname="monospace"; fontsize=10; fontcolor=black]
+        edge [color="black" fillcolor="white" style="solid"]
 
+        subgraph cluster_water_flow {
+                label="Main Flow"; style="dotted"
+                edge [color="#2196F3" fillcolor="white" style="solid" weight=5]
+                water_in -> flow_sensor -> water_out
+        }
 
-  subgraph {
-    node [shape=box color="#77ff7788" fillcolor="#77ff7730" style="filled"]
-    water_input
-    fertilizer_input
-  }
+        subgraph {
+                edge [color="#66dd66" fillcolor="white" style="solid" weight=2]
+                fertilizer -> pump
+                pump -> water_out
+        }
 
-  subgraph {
-    node [shape=box color="#ff777788" fillcolor="#ff777730" style="filled"]
-    water_output
-  }
-
-  subgraph {
-      node [shape=box color="#7777ff88" fillcolor="#7777ff30" style="filled"]
-      water_input -> flow_sensor -> water_output
-      fertilizer_input -> pump -> water_output
-  }
-
-  subgraph
-  {
-  node [shape=box color="#00ffff88" fillcolor="#00ffff30"  style="filled"]
-  edge [color="#00ffff70" fillcolor="transparent" style="dashed"]
-
-  controller -> flow_sensor
-  controller -> pump
-  }
+        subgraph {
+                edge [color="#FF9800" fillcolor="white" style="dashed" arrowhead="none" weight=0]
+                controller -> flow_sensor, pump
+        }
 
 }
 #+end_src
 
-#+RESULTS:
-[[file:./img/fertilizer1.png]]
+[[file:./img/injector.svg]]
 
 
-Controller measures water flow, scales pumping speed according to water flow speed.
-Flow sensor can be considered unneccesary since if you have consistent input pressure, and are watering pot by pot, your flow is roughly the same.
 
-So you could just have a fixed flow speed.
-
+Controller scales pump speed according to water flow.
+If you have consistent pressure you can just calibrate the pump to work on a consistent speed instead of having sensored control.
 
 ** TODO EC calibration
-you need an EC sensor
+We need to figure out how hard we want to run the pump depending on the detected flow speed.
+You'll need a handheld EC meter, (need to describe this)
 
+** TODO Different options
+- Just fertilize manually into the pots every once in a while?
 
-** TODO Better approaches
-- you don't do it, fertilize manually into the pots every once in a while?
+I use a flow sensor. The best sensor you can use here would be something that can actually measure whatever you are mixing into the line, since it takes into account inconsistent pumping speeds, can detect mixing issues etc.
 
-- you don't measure flow, but EC, since the way you mix fertilizer is EC
-
-
-* TODO Plant sensor element
-Super simple, we take a capacitive soil moisture sensor (I have some generic non versioned one, many places selling them)
-
-https://duckduckgo.com/?t=ffab&q=capacitive+soil+sensor&iax=images&ia=images
-[[./img/capacitive-soil-moisture-sensor.png]]
-
-People say that they can be unreliable, they are dirt cheap, buy a few, if you detect a dud looking at historical data, just replace it.
-
-* Data collection and calibration
-
-- we want minimal setup, ideally once the sensor is plugged in, it should show up in hass, in graphs etc
-
-Sensor is sending data via wifi to MQTT which makes it autodiscoverable by homeassistant, which will automatically store the historical data into influxdb
-
-(link integrations, link to setup guide for influx+mqtt)
-
-#+begin_src dot :file ./img/data_flow.png :results file graphics
-digraph {
-  rankdir=LR;
-  bgcolor=white;
-  node [shape=egg height="0.5" margin="0.1,0.05" fontname=terminus fontsize=14 fontcolor=black color="#00000099" style="solid"]
-  edge [color="black" fillcolor="white" style="solid"]
-
-plant -> sensor -> mqtt -> homeassistant -> influxdb -> grafana
-homeassistant -> valve -> plant
-}
-#+end_src
-
-[[file:./img/data_flow.png]]
-
-
-
-[[./img/grafana.png]]
-
-- shows a single sensor and points at which watering was triggered
-- in this case watering cycles were manually executed (you can notice that watering starts at arbitrary moisture levels)
+- For fertilizer, you could measure electrical conductivity.
+- For h2o2 (if sterilizing the system) you could measure ORP
