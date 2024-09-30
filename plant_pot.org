@@ -51,6 +51,8 @@ We detect water in the bottom container, auto-engage the pump to get rid of it.
 
 My pump control box contains a power supply, a button for manual activation, and it looks like I used a relay to control the pump. Could have used TIP120 as well instead.
 
+Control box takes power input, sensor input and provides pump output
+
 #+begin_src dot :file ./img/pump.svg :results file graphics
 digraph {
         rankdir=LR;
@@ -69,11 +71,12 @@ digraph {
                 controller -> sensor, pump
         }
 
-
+        power -> controller [color="#FF5C5C`" style="dashed"]
 }
 #+end_src
 
 [[file:./img/pump.svg]]
+
 
 
 [[./img/pump.jpeg]]
