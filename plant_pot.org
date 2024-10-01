@@ -1,4 +1,4 @@
-* Plant Pots
+* Plant Pots and drain pump
 
 ** General
 use 12mm tube push-in fittings from the parts page.

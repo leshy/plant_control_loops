@@ -23,7 +23,6 @@ I assume most people want this since it's difficult to link all the pots to pump
 Each plant has it's own individual soil sensor and a simple controller that maintains a control loop of reading soil capcitive moisture data and triggering watering cycles.
 
 
-
 * TODO Sensored control
 
 [[./img/drawing1.png]]
