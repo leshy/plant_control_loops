@@ -1,0 +1,52 @@
+
+* TODO In-line injector module (fertilization, sterilization etc)
+
+This is optional and many ways to go about it. In theory this gives you an ability to run a hydroponic system as well.
+
+#+begin_src dot :file ./img/injector.svg :results file graphics
+digraph {
+        rankdir=LR;
+        bgcolor=white; fontname="monospace"; fontsize=10; fontcolor=black;
+        node [shape=egg height="0.5" margin="0.1,0.05"  color="#00000099" style="solid" fontname="monospace"; fontsize=10; fontcolor=black]
+        edge [color="black" fillcolor="white" style="solid"]
+
+        subgraph cluster_water_flow {
+                label="Main Flow"; style="dotted"
+                edge [color="#2196F3" fillcolor="white" style="solid" weight=5]
+                water_in -> flow_sensor -> water_out
+        }
+
+        subgraph {
+                edge [color="#66dd66" fillcolor="white" style="solid" weight=2]
+                fertilizer -> pump
+                pump -> water_out
+        }
+
+        subgraph {
+                edge [color="#FF9800" fillcolor="white" style="dashed" arrowhead="none" weight=0]
+                controller -> flow_sensor, pump
+        }
+
+}
+#+end_src
+
+[[file:./img/injector.svg]]
+
+Controller scales pump speed according to water flow.
+If you have consistent pressure you can just calibrate the pump to work on a consistent speed instead of having sensored control.
+
+Sensor I use is [[https://wiki.dfrobot.com/Water_Flow_Sensor_-_1_8__SKU__SEN0216][this one]]
+
+** TODO EC calibration
+We need to figure out how hard we want to run the pump depending on the detected flow speed.
+You'll need a handheld EC meter, (need to describe this)
+
+** TODO Different options for sensors
+I use a flow sensor. The best sensor you can use here would be something that can actually measure whatever you are mixing into the line, since it takes into account inconsistent pumping speeds, can detect mixing issues etc.
+
+- For fertilizer, you could measure electrical conductivity.
+- For h2o2 (if sterilizing the system) you could measure ORP
+
+** TODO Different options for pumping
+- If you have a compressor you can pressurize the fertilizer container and use the valve with PWM (fast switching on and off) to regulate the mix amounts instead of a pump
+  could be more reliable and silent

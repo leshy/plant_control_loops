@@ -103,8 +103,10 @@ const configOptions: ConfigOption[] = [
           <Text>
             Choose the control method:
             <br />
-            - Local: Watering is controlled by the individual pot
-            <br />- Manifold: Watering is controlled by a central system
+            - Local: Watering is controlled at the individual pot, by the same
+            controller that reads the sensor state
+            <br />- Manifold: Watering is controlled by a central system and a
+            separate controller
           </Text>
         ),
       },
@@ -416,9 +418,7 @@ const ProductConfigurator: React.FC = () => {
             <Box
               height={{ base: "50vh", md: "70vh" }}
               position="relative"
-              border="1px solid"
-              borderColor="gray.200"
-              borderRadius="md"
+              border="0px solid"
               overflow="hidden"
               mb={6}
             >
