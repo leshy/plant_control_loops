@@ -48,5 +48,5 @@ I use a flow sensor. The best sensor you can use here would be something that ca
 - For h2o2 (if sterilizing the system) you could measure ORP
 
 ** TODO Different options for pumping
-- If you have a compressor you can pressurize the fertilizer container and use the valve with PWM (fast switching on and off) to regulate the mix amounts instead of a pump
+- If you have a compressor you can pressurize the fertilizer container and use the valve with PWM (fast switching on and off) to regulate the mix amounts instead of using a pump,
   could be more reliable and silent
